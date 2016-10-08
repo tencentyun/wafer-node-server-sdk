@@ -1,0 +1,26 @@
+{
+  "name": "qcloud-weapp-server-sdk",
+  "version": "0.1.0",
+  "description": "微信小程序服务端SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.code.oa.com/la/qcloud-weapp-server-sdk-node.git"
+  },
+  "keywords": [
+    "auth",
+    "login",
+    "weapp",
+    "wechat",
+    "websocket",
+    "sdk"
+  ],
+  "author": "CFETeam",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.75.0"
+  }
+}
