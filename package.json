@@ -18,9 +18,14 @@
     "websocket",
     "sdk"
   ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "author": "CFETeam",
   "license": "MIT",
   "dependencies": {
+    "co": "^4.6.0",
+    "es6-promisify": "^5.0.0",
     "request": "^2.75.0"
   }
 }
