@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-    LoginService: require('./lib/login-service'),
-    LoginServiceError: require('./lib/login-service-error'),
+    LoginService: require('./lib/auth/login-service'),
+    LoginServiceError: require('./lib/auth/login-service-error'),
 };
