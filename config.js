@@ -5,7 +5,7 @@ exports = options => {
 
     Object.keys(options).forEach(key => {
         if (exports.hasOwnProperty(key)) {
-            exports[key] = options[key];
+            exports[key] = String(options[key]);
         }
     });
 };
