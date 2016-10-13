@@ -14,10 +14,10 @@ exports = options => {
 exports.ServerHost = '';
 
 // 鉴权服务器服务地址
-exports.AuthServerHost = '';
+exports.AuthServerUrl = '';
 
 // 信道服务器服务地址
-exports.TunnelServerHost = '';
+exports.TunnelServerUrl = '';
 
 // 信道服务签名密钥，该密钥需要保密
 exports.TunnelSignatureKey = '';
