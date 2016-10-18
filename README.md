@@ -283,7 +283,7 @@ const tunnelIds = ['tunnelId-1', 'tunnelId-2'];
 const messageType = 'speak';
 const messageContent = { 'who': 'john', 'word': 'hello' };
 
-TunnelService.broadcast()
+TunnelService.broadcast(tunnelIds, messageType, messageContent)
     .then(result => {
         // 消息广播成功
 
@@ -292,6 +292,15 @@ TunnelService.broadcast()
 
         // `tunnelIds`中 存在无效的信道 IDs
         const hasInvalidTunnelIds = !!invalidTunnelIds.length;
+    })
+    .catch(err => {
+        // 消息广播失败
+
+        // 失败错误码
+        console.log('code', err.code);
+
+        // 失败错误消息
+        console.log('message', err.message);
     });
 ```
 
