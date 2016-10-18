@@ -8,7 +8,7 @@
     "url": "http://github.com/CFETeam/qcloud-weapp-server-sdk-node.git"
   },
   "keywords": [
-    "auth",
+    "authentication",
     "login",
     "weapp",
     "wechat",
