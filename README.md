@@ -41,7 +41,7 @@ qcloud.config({
 
 ### 样例 1：使用 `LoginService.login()` 处理用户登录
 
-需要指定单独的路由处理用户登录，如 `https://www.qcloud.la/login`
+处理用户登录需要指定单独的路由，如 `https://www.qcloud.la/login`
 
 ```js
 const express = require('express');
@@ -55,6 +55,8 @@ app.get('/login', (req, res) => {
         console.log('微信用户信息', result.userInfo);
     });
 });
+
+app.listen(80);
 ```
 
 ### 样例 2：使用 `LoginService.check()` 处理业务 cgi 请求时校验登录态
@@ -78,14 +80,17 @@ app.get('/user', (req, res) => {
         });
     });
 });
+
+app.listen(80);
 ```
 
 ### 样例 3：使用 `TunnelService.handle()` 处理信道请求
 
-需要指定单独的路由处理信道请求，如 `https://www.qcloud.la/tunnel`
+处理信道请求需要指定单独的路由，如 `https://www.qcloud.la/tunnel`
 
 ```js
 const express = require('express');
+const bodyParser = require('body-parser');
 const TunnelService = require('qcloud-weapp-server-sdk').TunnelService;
 const app = express();
 
@@ -103,6 +108,9 @@ class TunnelHandler {
     onClose(tunnelId) {}
 }
 
+// parse `application/json`
+app.use(bodyParser.json());
+
 // 处理信道请求
 // 信道需同时处理 `GET` 和 `POST` 请求，为了方便这里使用 `all` 方法
 app.all('/tunnel', (req, res) => {
@@ -111,6 +119,8 @@ app.all('/tunnel', (req, res) => {
 
     loginService.handle(handler, { 'checkLogin': true });
 });
+
+app.listen(80);
 ```
 
 ## API
@@ -203,7 +213,7 @@ const qcloud = require('qcloud-weapp-server-sdk');
 
 ##### TunnelService#handle(tunnelHandler[, options])
 
-`TunnelService` 实例方法，用于处理信道请求。
+`TunnelService` 实例方法，用于处理信道请求。该方法会同时处理 `GET` 和 `POST` 请求，当处理 `POST` 请求时，依赖外部将已解析好的 `application/json` 媒体类型的数据传入，默认直接从 `req.body` 取值。
 
 ###### 参数
 
@@ -211,6 +221,7 @@ const qcloud = require('qcloud-weapp-server-sdk');
 
 - `options` - 该参数支持的可选配置如下：
     - `checkLogin` - 是否校验登录态（默认为 `false`）
+    - `getBody()` - 获取解析 `application/json` 后的 `data`（默认为 `req.body`）
 
 ###### 返回值
 
