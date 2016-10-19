@@ -19,7 +19,7 @@
 ## 安装
 
 ```sh
-npm install qcloud-weapp-server-sdk
+npm install qcloud-weapp-server-sdk --save
 ```
 
 > 本 SDK 支持 Node.js v4.0.0 以上的版本
