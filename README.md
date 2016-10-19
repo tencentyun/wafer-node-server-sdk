@@ -8,7 +8,7 @@
 ## 目录
 
 - [安装](#安装)
-- [使用示例](#使用示例)
+- [使用](#使用)
 - [API](#api)
     - [命名空间](#命名空间)
     - [SDK 配置](#sdk-配置)
@@ -24,7 +24,7 @@ npm install qcloud-weapp-server-sdk --save
 
 > 本 SDK 支持 Node.js v4.0.0 以上的版本
 
-## 使用示例
+## 使用
 
 ### 初始化 SDK 配置项
 
@@ -122,6 +122,10 @@ app.all('/tunnel', (req, res) => {
 
 app.listen(80);
 ```
+
+### 详细示例
+
+参见项目：[腾讯云微信小程序服务端 DEMO - Node.js](https://github.com/CFETeam/qcloud-weapp-server-demo-node)
 
 ## API
 
