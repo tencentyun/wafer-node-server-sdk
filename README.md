@@ -114,7 +114,7 @@ app.listen(80);
 
 ### 详细示例
 
-参见项目：[腾讯云微信小程序服务端 DEMO - Node.js](https://github.com/CFETeam/qcloud-weapp-server-demo-node)
+参见项目：[腾讯云微信小程序服务端 DEMO - Node.js](https://github.com/tencentyun/weapp-node-server-demo)
 
 ## API
 
