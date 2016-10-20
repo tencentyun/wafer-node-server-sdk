@@ -1,6 +1,6 @@
 # 腾讯云微信小程序服务端 SDK - Node.js
 
-本 SDK 需要和 [微信小程序客户端腾讯云增强 SDK](https://github.com/CFETeam/weapp-client-sdk) 配合一起使用，提供的服务有：
+本 SDK 需要和 [微信小程序客户端腾讯云增强 SDK](https://github.com/tencentyun/weapp-client-sdk) 配合一起使用，提供的服务有：
 
 + 登录鉴权服务
 + 信道服务
