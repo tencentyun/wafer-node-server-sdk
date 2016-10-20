@@ -24,7 +24,7 @@ qcloud.config({
     ServerHost: '业务服务器的主机名',
     AuthServerUrl: '鉴权服务器地址',
     TunnelServerUrl: '信道服务器地址',
-    TunnelSignatureKey: '通信签名密钥',
+    TunnelSignatureKey: '和信道服务器通信的签名密钥',
 });
 ```
 

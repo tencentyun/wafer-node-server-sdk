@@ -23,7 +23,7 @@ const qcloud = require('qcloud-weapp-server-sdk');
     - `ServerHost` - 指定使用本 SDK 的业务服务器的主机名，如 `www.qcloud.la`，该主机需要外网可访问
     - `AuthServerUrl` - 指定鉴权服务器服务地址，如 `http://mina.auth.com`
     - `TunnelServerUrl` - 指定信道服务器服务地址，如 `https://ws.qcloud.com`
-    - `TunnelSignatureKey` - 指定和信道服务通信的签名密钥，如 `27fb7d1c161b7ca52d73cce0f1d833f9f5b5ec89`，该密钥需要保密
+    - `TunnelSignatureKey` - 指定和信道服务通信的签名密钥，如 `9f338d1f0ecc37d25ac7b161c1d7bf72`，该密钥需要保密
 
 ##### 返回值
 
