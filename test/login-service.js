@@ -7,16 +7,11 @@ const httpMocks = require('node-mocks-http');
 const qcloud = require('..');
 const constants = require('../lib/auth/constants');
 const LoginService = qcloud.LoginService;
+const sdkConfig = require('./support/sdk_config.json');
 
 describe('auth/login-service.js', function () {
     beforeEach(function () {
-        qcloud.config({
-            ServerHost: 'www.qcloua.la',
-            AuthServerUrl: 'http://127.0.0.1:9993/auth',
-            TunnelServerUrl: 'https://ws.qcloud.com',
-            TunnelSignatureKey: '9f338d1f0ecc37d25ac7b161c1d7bf72',
-            NetworkTimeout: 1000,
-        });
+        qcloud.config(sdkConfig);
     });
 
     describe('LoginService', function () {
