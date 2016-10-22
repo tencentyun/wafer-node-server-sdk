@@ -29,6 +29,7 @@
     "request": "^2.75.0"
   },
   "devDependencies": {
+    "co": "^4.6.0",
     "mocha": "^3.1.2",
     "node-mocks-http": "^1.5.4",
     "should": "^11.1.1",
