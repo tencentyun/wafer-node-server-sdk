@@ -21,24 +21,20 @@ describe('auth/login-service.js', function () {
             });
 
             should.throws(function () {
-                const request = createRequest();
-                new LoginService(request, 'response');
+                new LoginService(createRequest(), 'response');
             });
 
             should.throws(function () {
-                const response = createResponse();
-                new LoginService('request', response);
+                new LoginService('request', createResponse());
             });
 
             should.doesNotThrow(function () {
-                const request = createRequest();
-                const response = createResponse();
-                new LoginService(request, response);
+                new LoginService(createRequest(), createResponse());
             });
         });
     });
 
-    describe('LoginService.login()', function () {
+    describe('LoginService#login()', function () {
         it('should return a promise if no callback function passed in', function () {
             const request = createRequest();
             const response = createResponse();
@@ -176,7 +172,7 @@ describe('auth/login-service.js', function () {
         });
     });
 
-    describe('LoginService.check()', function () {
+    describe('LoginService#check()', function () {
         it('should return a promise if no callback function passed in', function () {
             const request = createRequest();
             const response = createResponse();
@@ -229,8 +225,8 @@ describe('auth/login-service.js', function () {
 
             // test with invalid code
             const headers1 = {
-                [constants.WX_HEADER_ID]: 'invalid-code',
-                [constants.WX_HEADER_SKEY]: 'valid-data',
+                [constants.WX_HEADER_ID]: 'invalid-id',
+                [constants.WX_HEADER_SKEY]: 'valid-key',
             };
 
             const request1 = createRequest({ method: 'GET', url: '/check', headers: headers1 });
@@ -244,8 +240,8 @@ describe('auth/login-service.js', function () {
 
             // test with invalid encryptData
             const headers2 = {
-                [constants.WX_HEADER_ID]: 'valid-code',
-                [constants.WX_HEADER_SKEY]: 'invalid-data',
+                [constants.WX_HEADER_ID]: 'valid-id',
+                [constants.WX_HEADER_SKEY]: 'invalid-key',
             };
 
             const request2 = createRequest({ method: 'GET', url: '/check', headers: headers2 });
@@ -261,7 +257,7 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server respond with invalid data', function (done) {
             const headers = {
                 [constants.WX_HEADER_ID]: 'expect-invalid-json',
-                [constants.WX_HEADER_SKEY]: 'valid-data',
+                [constants.WX_HEADER_SKEY]: 'valid-key',
             };
 
             const request = createRequest({ method: 'GET', url: '/check', headers });
@@ -277,7 +273,7 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server send 500 result', function (done) {
              const headers = {
                  [constants.WX_HEADER_ID]: 'expect-500',
-                 [constants.WX_HEADER_SKEY]: 'valid-data',
+                 [constants.WX_HEADER_SKEY]: 'valid-key',
              };
 
              const request = createRequest({ method: 'GET', url: '/check', headers });
@@ -294,7 +290,7 @@ describe('auth/login-service.js', function () {
             qcloud.config.setNetworkTimeout(1);
             const headers = {
                 [constants.WX_HEADER_ID]: 'expect-timeout',
-                [constants.WX_HEADER_SKEY]: 'valid-data',
+                [constants.WX_HEADER_SKEY]: 'valid-key',
             };
 
             const request = createRequest({ method: 'GET', url: '/check', headers });
