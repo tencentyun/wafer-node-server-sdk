@@ -15,13 +15,6 @@ const sdkConfig = require('./support/sdk_config.json');
 
 describe('tunnel/tunnel-service.js', function () {
     before(function () {
-        const signature = require('../lib/tunnel/signature');
-
-        // 不校验签名
-        sinon.stub(signature, 'check', () => true);
-    });
-
-    beforeEach(function () {
         qcloud.config(sdkConfig);
     });
 
@@ -44,7 +37,29 @@ describe('tunnel/tunnel-service.js', function () {
             });
         });
 
+        describe('TunnelService#handle()', function () {
+            it('should respond with 501 error if request method is neither GET nor POST', function () {
+                const request = createRequest({ 'method': 'PUT' });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+
+                const body = JSON.parse(response._getData());
+                body.code.should.be.equal(501);
+            });
+        });
+
         describe('TunnelService#handle() - GET', function () {
+            const signature = require('../lib/tunnel/signature');
+            before(function () {
+                // 不校验签名
+                sinon.stub(signature, 'check', () => true);
+            });
+
+            after(function () {
+               signature.check.restore();
+            });
+
             it('should respond with websocket connection url and call `onRequest` with `tunnelId`', function (done) {
                 const request = createRequest({ 'method': 'GET', 'url': '/tunnel' });
                 const response = createResponse();
@@ -122,6 +137,178 @@ describe('tunnel/tunnel-service.js', function () {
 
                 TunnelService.create(request, response).handle(tunnelHandler, { 'checkLogin': true });
             });
+        });
+
+        describe('TunnelService#handle() - POST', function () {
+            const signature = require('../lib/tunnel/signature');
+            before(function () {
+                sinon.stub(signature, 'compute', () => 'valid-signature');
+
+                // 不校验签名
+                sinon.stub(signature, 'check', (input, sign) => {
+                    return (sign === 'valid-signature');
+                });
+            });
+
+            after(function () {
+               signature.compute.restore();
+               signature.check.restore();
+            });
+
+            let tunnelHandler;
+            beforeEach(function () {
+                tunnelHandler = {
+                    onRequest: sinon.spy(),
+                    onConnect: sinon.spy(),
+                    onMessage: sinon.spy(),
+                    onClose: sinon.spy(),
+                };
+            });
+
+            it('should respond with error if request body is not an object', function () {
+                const body = 'this is a string';
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(9001);
+            });
+
+            it('should respond with error if request body has no data', function () {
+                const body = {};
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(9002);
+            });
+
+            it('should respond with error if request signature is invalid', function () {
+                const body = { 'data': '{}', 'signature': 'invalid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(9003);
+            });
+
+            it('should respond with error if request body.data is invalid', function () {
+                const body = { 'data': 'whatever', 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(9004);
+            });
+
+            it('should respond with ok if request body is valid', function () {
+                const body = { 'data': '{}', 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle();
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+            });
+
+            it('should only call `onConnect` handler if received `connect` packet', function () {
+                const data = '{"tunnelId":"tunnel1","type":"connect"}';
+                const body = { data, 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+
+                tunnelHandler.onRequest.should.not.be.called();
+                tunnelHandler.onMessage.should.not.be.called();
+                tunnelHandler.onClose.should.not.be.called();
+
+                tunnelHandler.onConnect.should.be.calledOnce();
+                tunnelHandler.onConnect.should.be.calledWith('tunnel1');
+            });
+
+            it('should only call `onMessage` handler if received `message` packet', function () {
+                const data = JSON.stringify({
+                    tunnelId: 'tunnel1',
+                    type: 'message',
+                    content: JSON.stringify({ type: 'hi', content: 'hello, everyone.' }),
+                });
+                const body = { data, 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+
+                tunnelHandler.onRequest.should.not.be.called();
+                tunnelHandler.onConnect.should.not.be.called();
+                tunnelHandler.onClose.should.not.be.called();
+
+                tunnelHandler.onMessage.should.be.calledOnce();
+                tunnelHandler.onMessage.should.be.calledWithExactly('tunnel1', 'hi', 'hello, everyone.');
+            });
+
+            it('should only call `onMessage` handler if received `message` packet but unknown message-type', function () {
+                const data = JSON.stringify({
+                    tunnelId: 'tunnel1',
+                    type: 'message',
+                    content: 'hi, there',
+                });
+                const body = { data, 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+
+                tunnelHandler.onRequest.should.not.be.called();
+                tunnelHandler.onConnect.should.not.be.called();
+                tunnelHandler.onClose.should.not.be.called();
+
+                tunnelHandler.onMessage.should.be.calledOnce();
+                tunnelHandler.onMessage.should.be.calledWithExactly('tunnel1', 'UnknownRaw', 'hi, there');
+            });
+
+            it('should only call `onClose` handler if received `close` packet', function () {
+                const data = JSON.stringify({
+                    tunnelId: 'tunnel1',
+                    type: 'close',
+                });
+                const body = { data, 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+
+                tunnelHandler.onRequest.should.not.be.called();
+                tunnelHandler.onConnect.should.not.be.called();
+                tunnelHandler.onMessage.should.not.be.called();
+
+                tunnelHandler.onClose.should.be.calledOnce();
+                tunnelHandler.onClose.should.be.calledWithExactly('tunnel1');
+            });
+        });
+
+        describe('TunnelService.broadcast()', function () {
+            // TODO: add test case here
+        });
+
+        describe('TunnelService.emit()', function () {
+            // TODO: add test case here
+        });
+
+        describe('TunnelService.closeTunnel()', function () {
+            // TODO: add test case here
         });
     });
 });
