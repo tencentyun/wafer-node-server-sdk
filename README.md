@@ -103,10 +103,10 @@ app.use(bodyParser.json());
 // 处理信道请求
 // 信道需同时处理 `GET` 和 `POST` 请求，为了方便这里使用 `all` 方法
 app.all('/tunnel', (req, res) => {
-    const loginService = new LoginService(req, res);
+    const tunnelService = new TunnelService(req, res);
     const handler = new TunnelHandler();
 
-    loginService.handle(handler, { 'checkLogin': true });
+    tunnelService.handle(handler, { 'checkLogin': true });
 });
 
 app.listen(80);
