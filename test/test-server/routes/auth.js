@@ -5,12 +5,20 @@ class Router extends RouterBase {
         let interfaceName, code, encrypt_data, id, skey;
 
         try {
-            ({
+            // ES6 syntax (not work for node v4)
+            /*({
                 interface: {
                     interfaceName,
                     para: { code, encrypt_data, id, skey }
                 }
-            } = this.req.body);
+            } = this.req.body);*/
+
+            const body = this.req.body;
+            interfaceName = body.interface.interfaceName;
+            code = body.interface.para.code;
+            encrypt_data = body.interface.para.encrypt_data;
+            id = body.interface.para.id;
+            skey = body.interface.para.skey;
         } catch (err) {
             return this.res.$send('Bad Request - 无法解析的 JSON 包', 400);
         }
