@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-server": "nodemon test/test-server",
+    "travis-test-server": "node test/test-server > /dev/null 2>&1",
     "test": "mocha --reporter spec --check-leaks --bail --slow 1000 test/"
   },
   "repository": {

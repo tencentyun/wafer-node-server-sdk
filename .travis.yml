@@ -22,7 +22,8 @@ install:
   - npm install
 
 before_script:
-  - npm run test-server &
+  - npm run travis-test-server &
 
 script:
+  - sleep 1
   - npm test
