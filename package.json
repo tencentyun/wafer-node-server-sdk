@@ -4,7 +4,8 @@
   "description": "QCloud 微信小程序服务端 SDK",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test-server": "nodemon test/test-server",
+    "test": "mocha --reporter spec --check-leaks --bail --slow 1000 test/"
   },
   "repository": {
     "type": "git",
@@ -29,9 +30,12 @@
     "request": "^2.75.0"
   },
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "co": "^4.6.0",
+    "express": "^4.14.0",
     "mocha": "^3.1.2",
     "node-mocks-http": "^1.5.4",
+    "nodemon": "^1.11.0",
     "should": "^11.1.1",
     "should-sinon": "0.0.5",
     "sinon": "^1.17.6"
