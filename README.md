@@ -1,5 +1,8 @@
 # 腾讯云微信小程序服务端 SDK - Node.js
 
+[![NPM Version][npm-image]][npm-url]
+[![License][license-image]][license-url]
+
 本 SDK 需要和 [微信小程序客户端腾讯云增强 SDK](https://github.com/tencentyun/weapp-client-sdk) 配合一起使用，提供的服务有：
 
 + 登录鉴权服务
@@ -127,3 +130,8 @@ app.listen(80);
 ## LICENSE
 
 [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/qcloud-weapp-server-sdk.svg
+[npm-url]: https://npmjs.org/package/qcloud-weapp-server-sdk
+[license-image]: http://img.shields.io/npm/l/qcloud-weapp-server-sdk.svg
+[license-url]: LICENSE
