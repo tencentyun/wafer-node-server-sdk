@@ -80,7 +80,7 @@ describe('tunnel/tunnel-service.js', function () {
             it('should respond with websocket connection url and call `onRequest` with `tunnelId/userInfo` if `checkLogin` is true', function (done) {
                 const headers = {
                     [constants.WX_HEADER_ID]: 'valid-id',
-                    [constants.WX_HEADER_SKEY]: 'valid-key',
+                    [constants.WX_HEADER_SKEY]: 'valid-skey',
                 };
                 const request = createRequest({ 'method': 'GET', 'url': '/tunnel', headers });
                 const response = createResponse();
@@ -119,7 +119,7 @@ describe('tunnel/tunnel-service.js', function () {
             it('should respond with error if `checkLogin` is true but with invalid session info', function (done) {
                 const headers = {
                     [constants.WX_HEADER_ID]: 'invalid-id',
-                    [constants.WX_HEADER_SKEY]: 'valid-key',
+                    [constants.WX_HEADER_SKEY]: 'valid-skey',
                 };
                 const request = createRequest({ 'method': 'GET', 'url': '/tunnel', headers });
                 const response = createResponse({ eventEmitter: EventEmitter });
@@ -300,15 +300,33 @@ describe('tunnel/tunnel-service.js', function () {
         });
 
         describe('TunnelService.broadcast()', function () {
-            // TODO: add test case here
+            it('should return a promise', function () {
+                const tunnelIds = ['tunnel1', 'tunnel2'];
+                const messageType = 'hi';
+                const messageContent = 'hello, everybody!';
+
+                const result = TunnelService.broadcast(tunnelIds, messageType, messageContent);
+                result.should.be.instanceof(Promise);
+            });
         });
 
         describe('TunnelService.emit()', function () {
-            // TODO: add test case here
+            it('should return a promise', function () {
+                const tunnelId = 'tunnel1';
+                const messageType = 'hi';
+                const messageContent = 'hello, how are you!';
+
+                const result = TunnelService.emit(tunnelId, messageType, messageContent);
+                result.should.be.instanceof(Promise);
+            });
         });
 
         describe('TunnelService.closeTunnel()', function () {
-            // TODO: add test case here
+            it('should return a promise', function () {
+                const tunnelId = 'tunnel1';
+                const result = TunnelService.closeTunnel(tunnelId);
+                result.should.be.instanceof(Promise);
+            });
         });
     });
 });

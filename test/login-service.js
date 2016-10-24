@@ -155,7 +155,6 @@ describe('auth/login-service.js', function () {
         });
 
         it('should respond with error if auth-server timedout', function (done) {
-            qcloud.config.setNetworkTimeout(1);
             const headers = {
                 [constants.WX_HEADER_CODE]: 'expect-timeout',
                 [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
@@ -191,7 +190,7 @@ describe('auth/login-service.js', function () {
         it('should return user_info if carry with valid id/skey headers', function (done) {
             const headers = {
                 [constants.WX_HEADER_ID]: 'valid-id',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request = createRequest({ method: 'GET', url: '/check', headers });
@@ -226,7 +225,7 @@ describe('auth/login-service.js', function () {
             // test with invalid code
             const headers1 = {
                 [constants.WX_HEADER_ID]: 'invalid-id',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request1 = createRequest({ method: 'GET', url: '/check', headers: headers1 });
@@ -241,7 +240,7 @@ describe('auth/login-service.js', function () {
             // test with invalid encryptData
             const headers2 = {
                 [constants.WX_HEADER_ID]: 'valid-id',
-                [constants.WX_HEADER_SKEY]: 'invalid-key',
+                [constants.WX_HEADER_SKEY]: 'invalid-skey',
             };
 
             const request2 = createRequest({ method: 'GET', url: '/check', headers: headers2 });
@@ -257,7 +256,7 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server respond with invalid data', function (done) {
             const headers = {
                 [constants.WX_HEADER_ID]: 'expect-invalid-json',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request = createRequest({ method: 'GET', url: '/check', headers });
@@ -283,7 +282,7 @@ describe('auth/login-service.js', function () {
             // test 60011 error
             const headers1 = {
                 [constants.WX_HEADER_ID]: 'expect-60011',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request1 = createRequest({ method: 'GET', url: '/check', headers: headers1 });
@@ -298,7 +297,7 @@ describe('auth/login-service.js', function () {
             // test 60012 error
             const headers2 = {
                 [constants.WX_HEADER_ID]: 'expect-60012',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request2 = createRequest({ method: 'GET', url: '/check', headers: headers2 });
@@ -314,7 +313,7 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server send 500 result', function (done) {
              const headers = {
                  [constants.WX_HEADER_ID]: 'expect-500',
-                 [constants.WX_HEADER_SKEY]: 'valid-key',
+                 [constants.WX_HEADER_SKEY]: 'valid-skey',
              };
 
              const request = createRequest({ method: 'GET', url: '/check', headers });
@@ -328,10 +327,9 @@ describe('auth/login-service.js', function () {
         });
 
         it('should respond with error if auth-server timedout', function (done) {
-            qcloud.config.setNetworkTimeout(1);
             const headers = {
                 [constants.WX_HEADER_ID]: 'expect-timeout',
-                [constants.WX_HEADER_SKEY]: 'valid-key',
+                [constants.WX_HEADER_SKEY]: 'valid-skey',
             };
 
             const request = createRequest({ method: 'GET', url: '/check', headers });
