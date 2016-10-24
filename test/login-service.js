@@ -270,6 +270,47 @@ describe('auth/login-service.js', function () {
             }).then(done, done);
         });
 
+        it('should respond with error if auth-server respond with 60011/60012', function (done) {
+            let wait = (err) => {
+                if (err) {
+                    wait = () => void(0);
+                    return done(err);
+                }
+                wait.count = (wait.count || 0) + 1;
+                if (wait.count === 2) done();
+            }
+
+            // test 60011 error
+            const headers1 = {
+                [constants.WX_HEADER_ID]: 'expect-60011',
+                [constants.WX_HEADER_SKEY]: 'valid-key',
+            };
+
+            const request1 = createRequest({ method: 'GET', url: '/check', headers: headers1 });
+            const response1 = createResponse();
+
+            LoginService.create(request1, response1).check().catch(err => {
+                const body = JSON.parse(response1._getData());
+                body.should.have.property(constants.WX_SESSION_MAGIC_ID).which.is.equal(1);
+                body.should.have.property('error').which.is.a.String();
+            }).then(wait, wait);
+
+            // test 60012 error
+            const headers2 = {
+                [constants.WX_HEADER_ID]: 'expect-60012',
+                [constants.WX_HEADER_SKEY]: 'valid-key',
+            };
+
+            const request2 = createRequest({ method: 'GET', url: '/check', headers: headers2 });
+            const response2 = createResponse();
+
+            LoginService.create(request2, response2).check().catch(err => {
+                const body = JSON.parse(response2._getData());
+                body.should.have.property(constants.WX_SESSION_MAGIC_ID).which.is.equal(1);
+                body.should.have.property('error').which.is.a.String();
+            }).then(wait, wait);
+        });
+
         it('should respond with error if auth-server send 500 result', function (done) {
              const headers = {
                  [constants.WX_HEADER_ID]: 'expect-500',
