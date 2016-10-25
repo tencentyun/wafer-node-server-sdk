@@ -38,7 +38,8 @@ describe('auth/login-service.js', function () {
         it('should return a promise if no callback function passed in', function () {
             const request = createRequest();
             const response = createResponse();
-            const result = LoginService.create(request, response).login();
+            const loginService = LoginService.create(request, response);
+            const result = loginService.login().catch(() => void(0));
             result.should.be.instanceof(Promise);
         });
 
@@ -175,7 +176,8 @@ describe('auth/login-service.js', function () {
         it('should return a promise if no callback function passed in', function () {
             const request = createRequest();
             const response = createResponse();
-            const result = LoginService.create(request, response).check();
+            const loginService = LoginService.create(request, response);
+            const result = loginService.check().catch(() => void(0));;
             result.should.be.instanceof(Promise);
         });
 
