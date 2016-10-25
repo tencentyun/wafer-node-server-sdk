@@ -2,6 +2,7 @@
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
 [![License][license-image]][license-url]
 
 本 SDK 需要和 [微信小程序客户端腾讯云增强 SDK](https://github.com/tencentyun/weapp-client-sdk) 配合一起使用，提供的服务有：
@@ -136,5 +137,7 @@ app.listen(80);
 [npm-url]: https://npmjs.org/package/qcloud-weapp-server-sdk
 [travis-image]: https://travis-ci.org/tencentyun/weapp-node-server-sdk.svg?branch=master
 [travis-url]: https://travis-ci.org/tencentyun/weapp-node-server-sdk
+[coveralls-image]: https://coveralls.io/repos/github/tencentyun/weapp-node-server-sdk/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/tencentyun/weapp-node-server-sdk?branch=master
 [license-image]: http://img.shields.io/npm/l/qcloud-weapp-server-sdk.svg
 [license-url]: LICENSE
