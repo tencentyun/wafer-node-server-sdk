@@ -1,6 +1,7 @@
 # 腾讯云微信小程序服务端 SDK - Node.js
 
 [![NPM Version][npm-image]][npm-url]
+[![Minimum Node.js Version][nodejs-image]][nodejs-url]
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![License][license-image]][license-url]
@@ -15,8 +16,6 @@
 ```sh
 npm install qcloud-weapp-server-sdk --save
 ```
-
-> 本 SDK 支持 Node.js v4.0.0 以上的版本
 
 ## 使用
 
@@ -135,6 +134,8 @@ app.listen(80);
 
 [npm-image]: https://img.shields.io/npm/v/qcloud-weapp-server-sdk.svg
 [npm-url]: https://npmjs.org/package/qcloud-weapp-server-sdk
+[nodejs-image]: https://img.shields.io/badge/Node.js-%3E%3D%204.0-669B64.svg
+[nodejs-url]: https://nodejs.org/
 [travis-image]: https://travis-ci.org/tencentyun/weapp-node-server-sdk.svg?branch=master
 [travis-url]: https://travis-ci.org/tencentyun/weapp-node-server-sdk
 [coveralls-image]: https://coveralls.io/repos/github/tencentyun/weapp-node-server-sdk/badge.svg?branch=master
