@@ -8,5 +8,6 @@ module.exports = (req, res) => {
             tunnelId: 'tunnel1',
             connectUrl: 'wss://ws.qcloud.com/ws/tunnel1',
         }),
+        signature: 'fake_signature',
     });
 };
