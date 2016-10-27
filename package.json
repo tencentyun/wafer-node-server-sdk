@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec --check-leaks --bail --slow 1000 --recursive test/test-suite/",
-    "test-server": "nodemon test/test-server",
+    "test-server": "nodemon test/test-server --watch ./test/test-server/",
     "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks --bail --slow 1000 --recursive test/test-suite/",
     "travis-test-server": "node test/test-server > /dev/null 2>&1",
     "travis-test-cov": "istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks --bail --slow 1000 --recursive test/test-suite/",
