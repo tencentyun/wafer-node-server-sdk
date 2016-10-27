@@ -4,11 +4,12 @@
   "description": "QCloud 微信小程序服务端 SDK",
   "main": "index.js",
   "scripts": {
-    "test-server": "nodemon test/test-server",
-    "travis-test-server": "node test/test-server > /dev/null 2>&1",
     "test": "mocha --reporter spec --check-leaks --bail --slow 1000 test/",
-    "test-cov": "istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks --bail --slow 1000 test/",
-    "coveralls": "npm run test-cov && cat ./coverage/lcov.info | coveralls"
+    "test-server": "nodemon test/test-server",
+    "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks --bail --slow 1000 test/",
+    "travis-test-server": "node test/test-server > /dev/null 2>&1",
+    "travis-test-cov": "istanbul cover --report lcovonly ./node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks --bail --slow 1000 test/",
+    "coveralls": "npm run travis-test-cov && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
