@@ -13,6 +13,9 @@ const conf = {
     // 和信道服务器通信的签名密钥，该密钥需要保密
     TunnelSignatureKey: '',
 
+    // 信道服务通信是否需要校验签名
+    TunnelCheckSignature: true,
+
     // 网络请求超时时长（单位：毫秒）
     NetworkTimeout: 15 * 1000,
 };
@@ -21,7 +24,7 @@ exports = options => {
     options || (options = {});
 
     Object.keys(options).forEach(key => {
-        let value = options[key];
+        const value = options[key];
 
         if (key in conf && typeof value === typeof conf[key]) {
             conf[key] = value;
@@ -32,7 +35,9 @@ exports = options => {
 Object.keys(conf).forEach(key => {
     // 获取配置项
     exports[`get${key}`] = () => {
-        if (!conf[key]) {
+        const value = conf[key];
+
+        if (typeof value === 'string' && !value) {
             throw new Error(`\`${key}\`不能为空，请确保 SDK 配置已正确初始化`);
         }
 
