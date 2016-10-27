@@ -276,6 +276,27 @@ describe('tunnel/tunnel-service.js', function () {
                 tunnelHandler.onMessage.should.be.calledWithExactly('tunnel1', 'UnknownRaw', 'hi, there');
             });
 
+            it('should only call `onMessage` handler if received `message` packet but no content', function () {
+                const data = JSON.stringify({
+                    tunnelId: 'tunnel1',
+                    type: 'message',
+                });
+                const body = { data, 'signature': 'valid-signature' };
+                const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
+                const response = createResponse();
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+                const result = JSON.parse(response._getData());
+                result.code.should.be.equal(0);
+
+                tunnelHandler.onRequest.should.not.be.called();
+                tunnelHandler.onConnect.should.not.be.called();
+                tunnelHandler.onClose.should.not.be.called();
+
+                tunnelHandler.onMessage.should.be.calledOnce();
+                tunnelHandler.onMessage.should.be.calledWithExactly('tunnel1', 'UnknownRaw', undefined);
+            });
+
             it('should only call `onClose` handler if received `close` packet', function () {
                 const data = JSON.stringify({
                     tunnelId: 'tunnel1',
@@ -299,32 +320,107 @@ describe('tunnel/tunnel-service.js', function () {
         });
 
         describe('TunnelService.broadcast()', function () {
-            it('should return a promise', function () {
+            it('should return a promise', function (done) {
                 const tunnelIds = ['tunnel1', 'tunnel2'];
                 const messageType = 'hi';
                 const messageContent = 'hello, everybody!';
 
                 const result = TunnelService.broadcast(tunnelIds, messageType, messageContent);
                 result.should.be.instanceof(Promise);
+                result.then(() => done());
+            });
+
+            it('should respond with error if tunnel-server send 500 result', function (done) {
+                const tunnelIds = ['expect-500', 'tunnel2'];
+                const messageType = 'hi';
+                const messageContent = 'hello, everybody!';
+
+                const result = TunnelService.broadcast(tunnelIds, messageType, messageContent);
+                result.catch(err => done());
+            });
+
+            it('should respond with error if tunnel-server return invalid json', function (done) {
+                const tunnelIds = ['expect-invalid-json', 'tunnel2'];
+                const messageType = 'hi';
+                const messageContent = 'hello, everybody!';
+
+                const result = TunnelService.broadcast(tunnelIds, messageType, messageContent);
+                result.catch(err => done());
+            });
+
+            it('should failed if tunnel-server return failed result', function (done) {
+                const tunnelIds = ['expect-failed-result', 'tunnel2'];
+                const messageType = 'hi';
+                const messageContent = 'hello, everybody!';
+
+                const result = TunnelService.broadcast(tunnelIds, messageType, messageContent);
+                result.catch(err => done());
             });
         });
 
         describe('TunnelService.emit()', function () {
-            it('should return a promise', function () {
+            it('should return a promise', function (done) {
                 const tunnelId = 'tunnel1';
                 const messageType = 'hi';
                 const messageContent = 'hello, how are you!';
 
                 const result = TunnelService.emit(tunnelId, messageType, messageContent);
                 result.should.be.instanceof(Promise);
+                result.then(() => done());
+            });
+
+            it('should respond with error if tunnel-server send 500 result', function (done) {
+                const tunnelId = 'expect-500';
+                const messageType = 'hi';
+                const messageContent = 'hello, how are you!';
+
+                const result = TunnelService.emit(tunnelId, messageType, messageContent);
+                result.catch(err => done());
+            });
+
+            it('should respond with error if tunnel-server return invalid json', function (done) {
+                const tunnelId = 'expect-invalid-json';
+                const messageType = 'hi';
+                const messageContent = 'hello, how are you!';
+
+                const result = TunnelService.emit(tunnelId, messageType, messageContent);
+                result.catch(err => done());
+            });
+
+            it('should failed if tunnel-server return failed result', function (done) {
+                const tunnelId = 'expect-failed-result';
+                const messageType = 'hi';
+                const messageContent = 'hello, how are you!';
+
+                const result = TunnelService.emit(tunnelId, messageType, messageContent);
+                result.catch(err => done());
             });
         });
 
         describe('TunnelService.closeTunnel()', function () {
-            it('should return a promise', function () {
+            it('should return a promise', function (done) {
                 const tunnelId = 'tunnel1';
                 const result = TunnelService.closeTunnel(tunnelId);
                 result.should.be.instanceof(Promise);
+                result.then(() => done());
+            });
+
+            it('should respond with error if tunnel-server send 500 result', function (done) {
+                const tunnelId = 'expect-500';
+                const result = TunnelService.closeTunnel(tunnelId);
+                result.catch(err => done());
+            });
+
+            it('should respond with error if tunnel-server return invalid json', function (done) {
+                const tunnelId = 'expect-invalid-json';
+                const result = TunnelService.closeTunnel(tunnelId);
+                result.catch(err => done());
+            });
+
+            it('should failed if tunnel-server return failed result', function (done) {
+                const tunnelId = 'expect-failed-result';
+                const result = TunnelService.closeTunnel(tunnelId);
+                result.catch(err => done());
             });
         });
     });

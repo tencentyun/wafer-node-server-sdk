@@ -113,7 +113,7 @@ class Router extends RouterBase {
         case 'expect-timeout':
             setTimeout(() => {
                 this.res.$send('Timedout');
-            }, 60);
+            }, 100);
             return;
 
         default:

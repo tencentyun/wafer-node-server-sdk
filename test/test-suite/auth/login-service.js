@@ -43,15 +43,33 @@ describe('auth/login-service.js', function () {
             result.should.be.instanceof(Promise);
         });
 
-        it('should return undefined if a callback function passed in', function () {
+        it('should return undefined if a callback function passed in', function (done) {
             const request = createRequest();
             const response = createResponse();
-            const callback = () => {};
+
+            const callback = (err) => {
+                err.should.be.instanceof(Error);
+                done();
+            };
+
             const result = LoginService.create(request, response).login(callback);
             should(result).be.an.undefined();
         });
 
-        it('should return user_info and respond with id/skey if carry with valid code/encryptData headers', function (done) {
+        it('should respond with nothing if response headers has been sent', function (done) {
+            const request = createRequest();
+            const response = createResponse();
+            response.headersSent = true;
+
+            const callback = (err) => {
+                response._getData().should.be.equal('');
+                done();
+            };
+
+            LoginService.create(request, response).login(callback);
+        });
+
+        it('should return `user_info` and respond with id/skey if carry with valid code/encryptData headers', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
                 [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
@@ -69,6 +87,29 @@ describe('auth/login-service.js', function () {
 
                 result.should.have.property('userInfo').which.is.an.Object();
             }).then(done, done);
+        });
+
+        it('should pass `user_info` to callback and respond with id/skey if carry with valid code/encryptData headers', function (done) {
+            const headers = {
+                [constants.WX_HEADER_CODE]: 'valid-code',
+                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+            };
+
+            const request = createRequest({ method: 'GET', url: '/login', headers });
+            const response = createResponse();
+
+            LoginService.create(request, response).login((err, result) => {
+                const body = JSON.parse(response._getData());
+                body.should.have.property(constants.WX_SESSION_MAGIC_ID).which.is.equal(1);
+                body.should.have.property('session').which.is.an.Object();
+                body.session.id.should.be.a.String();
+                body.session.skey.should.be.a.String();
+
+                should(err).be.Null();
+                result.should.have.property('userInfo').which.is.an.Object();
+
+                done();
+            });
         });
 
         it('should respond with error if request headers do not contain code/encryptData', function (done) {
@@ -189,7 +230,7 @@ describe('auth/login-service.js', function () {
             should(result).be.an.undefined();
         });
 
-        it('should return user_info if carry with valid id/skey headers', function (done) {
+        it('should return `user_info` if carry with valid id/skey headers', function (done) {
             const headers = {
                 [constants.WX_HEADER_ID]: 'valid-id',
                 [constants.WX_HEADER_SKEY]: 'valid-skey',
