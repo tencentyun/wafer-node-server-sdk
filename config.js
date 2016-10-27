@@ -41,7 +41,7 @@ Object.keys(conf).forEach(key => {
             throw new Error(`\`${key}\`不能为空，请确保 SDK 配置已正确初始化`);
         }
 
-        return conf[key];
+        return value;
     };
 
     // 设定配置项
