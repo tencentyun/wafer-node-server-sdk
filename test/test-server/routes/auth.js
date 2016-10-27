@@ -51,7 +51,7 @@ class Router extends RouterBase {
                     id: 'success_id',
                     skey: 'success_skey',
                     user_info: {
-                        nickName: 'faked_user',
+                        nickName: 'fake_user',
                         gender: 0,
                     },
                 },
@@ -75,7 +75,7 @@ class Router extends RouterBase {
                 returnMessage: 'OK',
                 returnData: {
                     user_info: {
-                        nickName: 'faked_user',
+                        nickName: 'fake_user',
                         gender: 0,
                     },
                 },
