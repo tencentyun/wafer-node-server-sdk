@@ -38,6 +38,17 @@ describe('tunnel/tunnel-service.js', function () {
             });
         });
 
+        describe('TunnelService#get receiveUrl', function () {
+            it('should cache result when call `receiveUrl` more than once', function () {
+                const request = createRequest();
+                const response = createResponse();
+                const tunnelService = TunnelService.create(request, response);
+
+                const cached = tunnelService.receiveUrl;
+                tunnelService.receiveUrl.should.be.equal(cached);
+            });
+        });
+
         describe('TunnelService#handle()', function () {
             it('should respond with 501 error if request method is neither GET nor POST', function () {
                 const request = createRequest({ 'method': 'PUT' });
