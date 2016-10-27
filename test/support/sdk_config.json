@@ -3,5 +3,6 @@
     "AuthServerUrl": "http://127.0.0.1:9993/auth",
     "TunnelServerUrl": "http://127.0.0.1:9993/tunnel",
     "TunnelSignatureKey": "9f338d1f0ecc37d25ac7b161c1d7bf72",
+    "TunnelCheckSignature": false,
     "NetworkTimeout": 1000
 }

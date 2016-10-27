@@ -51,15 +51,6 @@ describe('tunnel/tunnel-service.js', function () {
         });
 
         describe('TunnelService#handle() - GET', function () {
-            before(function () {
-                // 不校验签名
-                sinon.stub(signature, 'check', () => true);
-            });
-
-            after(function () {
-               signature.check.restore();
-            });
-
             it('should respond with websocket connection url and call `onRequest` with `tunnelId`', function (done) {
                 const request = createRequest({ 'method': 'GET', 'url': '/tunnel' });
                 const response = createResponse();
@@ -137,24 +128,33 @@ describe('tunnel/tunnel-service.js', function () {
 
                 TunnelService.create(request, response).handle(tunnelHandler, { 'checkLogin': true });
             });
+
+            it('should respond with error if check signature failed', function (done) {
+                qcloud.config.setTunnelCheckSignature(true);
+
+                const request = createRequest({ 'method': 'GET', 'url': '/tunnel' });
+                const response = createResponse({ eventEmitter: EventEmitter });
+                const tunnelHandler = { onRequest: sinon.spy() };
+
+                response.on('end', function () {
+                    qcloud.config.setTunnelCheckSignature(false);
+
+                    co(function *() {
+                        const body = JSON.parse(response._getData());
+
+                        body.should.not.have.property(constants.WX_SESSION_MAGIC_ID);
+                        body.should.have.property('error').which.is.a.String();
+                        tunnelHandler.onRequest.should.not.be.called();
+                    }).then(done, done);
+                });
+
+                TunnelService.create(request, response).handle(tunnelHandler);
+            });
         });
 
         describe('TunnelService#handle() - POST', function () {
-            before(function () {
-                sinon.stub(signature, 'compute', () => 'valid-signature');
-
-                // 不校验签名
-                sinon.stub(signature, 'check', (input, sign) => {
-                    return (sign === 'valid-signature');
-                });
-            });
-
-            after(function () {
-               signature.compute.restore();
-               signature.check.restore();
-            });
-
             let tunnelHandler;
+
             beforeEach(function () {
                 tunnelHandler = {
                     onRequest: sinon.spy(),
@@ -185,6 +185,8 @@ describe('tunnel/tunnel-service.js', function () {
             });
 
             it('should respond with error if request signature is invalid', function () {
+                qcloud.config.setTunnelCheckSignature(true);
+
                 const body = { 'data': '{}', 'signature': 'invalid-signature' };
                 const request = createRequest({ 'method': 'POST', 'url': '/tunnel', body });
                 const response = createResponse();
@@ -192,6 +194,8 @@ describe('tunnel/tunnel-service.js', function () {
                 TunnelService.create(request, response).handle();
                 const result = JSON.parse(response._getData());
                 result.code.should.be.equal(9003);
+
+                qcloud.config.setTunnelCheckSignature(false);
             });
 
             it('should respond with error if request body.data is invalid', function () {
