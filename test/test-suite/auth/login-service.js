@@ -4,10 +4,10 @@ const http = require('http');
 const should = require('should');
 const httpMocks = require('node-mocks-http');
 
-const qcloud = require('..');
-const constants = require('../lib/auth/constants');
+const qcloud = require('../../../index.js');
+const constants = require('../../../lib/auth/constants');
 const LoginService = qcloud.LoginService;
-const sdkConfig = require('./support/sdk_config.json');
+const sdkConfig = require('../../support/sdk_config.json');
 
 describe('auth/login-service.js', function () {
     beforeEach(function () {

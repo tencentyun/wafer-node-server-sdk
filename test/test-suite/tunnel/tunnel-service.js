@@ -8,10 +8,11 @@ require('should-sinon');
 const httpMocks = require('node-mocks-http');
 const EventEmitter = require('events');
 
-const qcloud = require('..');
-const constants = require('../lib/auth/constants');
+const qcloud = require('../../../index.js');
+const constants = require('../../../lib/auth/constants');
+const signature = require('../../../lib/tunnel/signature');
 const TunnelService = qcloud.TunnelService;
-const sdkConfig = require('./support/sdk_config.json');
+const sdkConfig = require('../../support/sdk_config.json');
 
 describe('tunnel/tunnel-service.js', function () {
     before(function () {
@@ -50,7 +51,6 @@ describe('tunnel/tunnel-service.js', function () {
         });
 
         describe('TunnelService#handle() - GET', function () {
-            const signature = require('../lib/tunnel/signature');
             before(function () {
                 // 不校验签名
                 sinon.stub(signature, 'check', () => true);
@@ -140,7 +140,6 @@ describe('tunnel/tunnel-service.js', function () {
         });
 
         describe('TunnelService#handle() - POST', function () {
-            const signature = require('../lib/tunnel/signature');
             before(function () {
                 sinon.stub(signature, 'compute', () => 'valid-signature');
 
