@@ -29,6 +29,18 @@ const qcloud = require('qcloud-weapp-server-sdk');
 
 `undefined`
 
+### qcloud.config.setNetworkTimeout(millseconds: int)
+
+该方法用于设置网络请求超时时长（单位：毫秒），默认值为 30,000 毫秒，即 30 秒。
+
+##### 参数
+
+- `millseconds` - 网络请求超时时长
+
+##### 返回值
+
+`undefined`
+
 ## 登录鉴权服务
 
 ### Class: qcloud.LoginService
