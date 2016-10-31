@@ -17,7 +17,7 @@ const conf = {
     TunnelCheckSignature: true,
 
     // 网络请求超时时长（单位：毫秒）
-    NetworkTimeout: 15 * 1000,
+    NetworkTimeout: 30 * 1000,
 };
 
 exports = options => {
