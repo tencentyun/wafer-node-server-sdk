@@ -17,6 +17,10 @@
 npm install qcloud-weapp-server-sdk --save
 ```
 
+## API
+
+参见 [API 文档](./API.md)
+
 ## 使用
 
 ### 初始化 SDK 配置项
@@ -119,10 +123,6 @@ app.listen(80);
 ### 详细示例
 
 参见项目：[腾讯云微信小程序服务端 DEMO - Node.js](https://github.com/tencentyun/weapp-node-server-demo)
-
-## API
-
-参见 [API 文档](./API.md)
 
 ## LICENSE
 
