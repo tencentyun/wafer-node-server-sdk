@@ -122,11 +122,7 @@ app.listen(80);
 
 ## API
 
-参见文档 [API.md](./API.md)
-
-## 附：信道服务交互流程图
-
-![信道服务流程图](http://easyimage-10028115.file.myqcloud.com/internal/ozy5zc4q.njb.jpg)
+参见 [API 文档](./API.md)
 
 ## LICENSE
 
