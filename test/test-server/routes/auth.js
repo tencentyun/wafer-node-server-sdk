@@ -2,7 +2,7 @@
 
 class Router extends RouterBase {
     handle() {
-        let interfaceName, code, encrypt_data, id, skey;
+        let interfaceName, code, encrypt_data,iv, id, skey;
 
         try {
             // ES6 syntax (not work for node v4)
@@ -17,6 +17,7 @@ class Router extends RouterBase {
             interfaceName = body.interface.interfaceName;
             code = body.interface.para.code;
             encrypt_data = body.interface.para.encrypt_data;
+            iv           = body.interface.para.id;
             id = body.interface.para.id;
             skey = body.interface.para.skey;
         } catch (err) {
@@ -25,7 +26,7 @@ class Router extends RouterBase {
 
         switch (interfaceName) {
         case 'qcloud.cam.id_skey':
-            this.handleLoginRequest(code, encrypt_data);
+            this.handleLoginRequest(code, encrypt_data ,iv);
             break;
 
         case 'qcloud.cam.auth':
