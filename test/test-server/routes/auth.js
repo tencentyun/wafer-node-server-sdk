@@ -17,7 +17,7 @@ class Router extends RouterBase {
             interfaceName = body.interface.interfaceName;
             code = body.interface.para.code;
             encrypt_data = body.interface.para.encrypt_data;
-            iv = body.interface.para.id;
+            iv = body.interface.para.iv;
             id = body.interface.para.id;
             skey = body.interface.para.skey;
         } catch (err) {
