@@ -69,10 +69,11 @@ describe('auth/login-service.js', function () {
             LoginService.create(request, response).login(callback);
         });
 
-        it('should return `user_info` and respond with id/skey if carry with valid code/encryptData headers', function (done) {
+        it('should return `user_info` and respond with id/skey if carry with valid code/encryptedData/iv headers', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -89,10 +90,11 @@ describe('auth/login-service.js', function () {
             }).then(done, done);
         });
 
-        it('should pass `user_info` to callback and respond with id/skey if carry with valid code/encryptData headers', function (done) {
+        it('should pass `user_info` to callback and respond with id/skey if carry with valid code/encryptedData/iv headers', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -112,7 +114,7 @@ describe('auth/login-service.js', function () {
             });
         });
 
-        it('should respond with error if request headers do not contain code/encryptData', function (done) {
+        it('should respond with error if request headers do not contain code/encryptedData/iv', function (done) {
             const request = createRequest({ method: 'GET', url: '/login' });
             const response = createResponse();
 
@@ -123,7 +125,7 @@ describe('auth/login-service.js', function () {
             }).then(done, done);
         });
 
-        it('should respond with error if carry with invalid code/encryptData headers', function (done) {
+        it('should respond with error if carry with invalid code/encryptedData/iv headers', function (done) {
             let wait = (err) => {
                 if (err) {
                     wait = () => void(0);
@@ -136,7 +138,8 @@ describe('auth/login-service.js', function () {
             // test with invalid code
             const headers1 = {
                 [constants.WX_HEADER_CODE]: 'invalid-code',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request1 = createRequest({ method: 'GET', url: '/login', headers: headers1 });
@@ -151,7 +154,8 @@ describe('auth/login-service.js', function () {
             // test with invalid encryptData
             const headers2 = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'invalid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'invalid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request2 = createRequest({ method: 'GET', url: '/login', headers: headers2 });
@@ -167,7 +171,8 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server respond with invalid data', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'expect-invalid-json',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -183,7 +188,8 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server send 500 result', function (done) {
              const headers = {
                  [constants.WX_HEADER_CODE]: 'expect-500',
-                 [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                 [constants.WX_HEADER_IV]: 'valid-data'
              };
 
              const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -199,7 +205,8 @@ describe('auth/login-service.js', function () {
         it('should respond with error if auth-server timedout', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'expect-timeout',
-                [constants.WX_HEADER_ENCRYPT_DATA]: 'valid-data',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'valid-data'
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
