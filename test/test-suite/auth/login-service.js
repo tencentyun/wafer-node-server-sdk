@@ -73,7 +73,7 @@ describe('auth/login-service.js', function () {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -94,7 +94,7 @@ describe('auth/login-service.js', function () {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -132,14 +132,14 @@ describe('auth/login-service.js', function () {
                     return done(err);
                 }
                 wait.count = (wait.count || 0) + 1;
-                if (wait.count === 2) done();
+                if (wait.count === 3) done();
             }
 
             // test with invalid code
             const headers1 = {
                 [constants.WX_HEADER_CODE]: 'invalid-code',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request1 = createRequest({ method: 'GET', url: '/login', headers: headers1 });
@@ -155,7 +155,7 @@ describe('auth/login-service.js', function () {
             const headers2 = {
                 [constants.WX_HEADER_CODE]: 'valid-code',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'invalid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request2 = createRequest({ method: 'GET', url: '/login', headers: headers2 });
@@ -166,13 +166,29 @@ describe('auth/login-service.js', function () {
                 body.should.have.property(constants.WX_SESSION_MAGIC_ID).which.is.equal(1);
                 body.should.have.property('error').which.is.a.String();
             }).then(wait, wait);
+
+            // test with invalid iv
+            const headers3 = {
+                [constants.WX_HEADER_CODE]: 'valid-code',
+                [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
+                [constants.WX_HEADER_IV]: 'invalid-iv',
+            };
+
+            const request3 = createRequest({ method: 'GET', url: '/login', headers: headers3 });
+            const response3 = createResponse();
+
+            LoginService.create(request3, response3).login().catch(err => {
+                const body = JSON.parse(response3._getData());
+                body.should.have.property(constants.WX_SESSION_MAGIC_ID).which.is.equal(1);
+                body.should.have.property('error').which.is.a.String();
+            }).then(wait, wait);
         });
 
         it('should respond with error if auth-server respond with invalid data', function (done) {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'expect-invalid-json',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -189,7 +205,7 @@ describe('auth/login-service.js', function () {
              const headers = {
                  [constants.WX_HEADER_CODE]: 'expect-500',
                  [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                 [constants.WX_HEADER_IV]: 'valid-data'
+                 [constants.WX_HEADER_IV]: 'valid-iv',
              };
 
              const request = createRequest({ method: 'GET', url: '/login', headers });
@@ -206,7 +222,7 @@ describe('auth/login-service.js', function () {
             const headers = {
                 [constants.WX_HEADER_CODE]: 'expect-timeout',
                 [constants.WX_HEADER_ENCRYPTED_DATA]: 'valid-data',
-                [constants.WX_HEADER_IV]: 'valid-data'
+                [constants.WX_HEADER_IV]: 'valid-iv',
             };
 
             const request = createRequest({ method: 'GET', url: '/login', headers });

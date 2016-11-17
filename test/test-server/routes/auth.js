@@ -39,12 +39,12 @@ class Router extends RouterBase {
         }
     }
 
-    handleLoginRequest(code, encryptData) {
+    handleLoginRequest(code, encryptData, iv) {
         if (this.respond4CommonErrors(code) !== false) {
             return;
         }
 
-        if (code === 'valid-code' && encryptData === 'valid-data') {
+        if (code === 'valid-code' && encryptData === 'valid-data' && iv === 'valid-iv') {
             return this.res.$send({
                 returnCode: 0,
                 returnMessage: 'OK',
@@ -61,7 +61,7 @@ class Router extends RouterBase {
 
         this.res.$send({
             returnCode: -1,
-            returnMessage: 'invalid code or encryptData',
+            returnMessage: 'invalid code, encrypt_data or iv',
         });
     }
 
