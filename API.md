@@ -2,7 +2,7 @@
 
 - [命名空间](#命名空间)
 - [SDK 配置](#sdk-配置)
-- [登录鉴权服务](#登录鉴权服务)
+- [会话服务](#会话服务)
 - [信道服务](#信道服务)
 
 ## 命名空间
@@ -41,7 +41,7 @@ const qcloud = require('qcloud-weapp-server-sdk');
 
 `undefined`
 
-## 登录鉴权服务
+## 会话服务
 
 ### Class: qcloud.LoginService
 
