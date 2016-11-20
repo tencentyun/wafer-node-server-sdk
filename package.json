@@ -1,7 +1,7 @@
 {
   "name": "qcloud-weapp-server-sdk",
   "version": "0.8.0",
-  "description": "QCloud 微信小程序服务端 SDK",
+  "description": "Wafer 服务端 SDK - Node.js",
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec --check-leaks --bail --slow 1000 --recursive test/test-suite/",

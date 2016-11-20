@@ -1,4 +1,4 @@
-# 腾讯云微信小程序服务端 SDK - Node.js
+# Wafer 服务端 SDK - Node.js
 
 [![NPM Version][npm-image]][npm-url]
 [![Minimum Node.js Version][nodejs-image]][nodejs-url]
