@@ -6,10 +6,10 @@
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![License][license-image]][license-url]
 
-本 SDK 需要和 [微信小程序客户端腾讯云增强 SDK](https://github.com/tencentyun/weapp-client-sdk) 配合一起使用，提供的服务有：
+本项目是 [Wafer](https://github.com/tencentyun/wafer) 组成部分，以 SDK 的形式为业务服务器提供以下服务：
 
-+ 登录鉴权服务
-+ 信道服务
++ [会话服务](https://github.com/tencentyun/wafer/wiki/会话服务)
++ [信道服务](https://github.com/tencentyun/wafer/wiki/信道服务)
 
 ## 安装
 
@@ -36,9 +36,12 @@ qcloud.config({
 });
 ```
 
-### 样例 1：使用 `LoginService.login()` 处理用户登录
+### 使用会话服务
 
-处理用户登录需要指定单独的路由，如 `https://www.qcloud.la/login`
+#### 处理用户登录请求
+
+业务服务器提供一个路由（如 `/login`）处理客户端的登录请求，直接使用 SDK 的 [LoginService::login()](https://github.com/tencentyun/wafer-node-server-sdk/blob/master/API.md#loginservicelogincallback) 方法即可完成登录处理。登录成功后，可以获取用户信息。
+
 
 ```js
 const express = require('express');
@@ -56,7 +59,9 @@ app.get('/login', (req, res) => {
 app.listen(80);
 ```
 
-### 样例 2：使用 `LoginService.check()` 处理业务 cgi 请求时校验登录态
+#### 检查请求登录态
+
+客户端交给业务服务器的请求，业务服务器可以通过 SDK 的 [LoginService::check()](https://github.com/tencentyun/wafer-node-server-sdk/blob/master/API.md#loginservicecheckcallback) 方法来检查该请求是否包含合法的会话。如果包含，则会返回会话对应的用户信息。
 
 ```js
 const express = require('express');
@@ -81,9 +86,9 @@ app.get('/user', (req, res) => {
 app.listen(80);
 ```
 
-### 样例 3：使用 `TunnelService.handle()` 处理信道请求
+### 使用信道服务
 
-处理信道请求需要指定单独的路由，如 `https://www.qcloud.la/tunnel`
+业务在一个路由上（如 `/tunnel`）提供信道服务，只需把该路由上的请求都交给 SDK 的信道服务处理即可。
 
 ```js
 const express = require('express');
@@ -92,7 +97,7 @@ const TunnelService = require('qcloud-weapp-server-sdk').TunnelService;
 const app = express();
 
 class TunnelHandler {
-    // TODO: 处理 onRequest 事件
+    // TODO: 处理 onRequest 事件，
     onRequest(tunnelId, userInfo) {}
 
     // TODO: 处理 onConnect 事件
@@ -120,9 +125,13 @@ app.all('/tunnel', (req, res) => {
 app.listen(80);
 ```
 
+使用信道服务需要实现处理器，来获取处理信道的各种事件，具体可参考配套 Demo 中的 [ChatTunnelHandler](https://github.com/tencentyun/wafer-node-server-demo/blob/master/business/chat-tunnel-handler.js) 的实现。
+
+阅读 Wafer Wiki 中的[信道服务](https://github.com/tencentyun/wafer/wiki/%E4%BF%A1%E9%81%93%E6%9C%8D%E5%8A%A1)了解更多解决方案中关于信道服务的技术资料。
+
 ### 详细示例
 
-参见项目：[腾讯云微信小程序服务端 DEMO - Node.js](https://github.com/tencentyun/weapp-node-server-demo)
+参见项目：[Wafer 服务端 DEMO - Node.js](https://github.com/tencentyun/weapp-node-server-demo)
 
 ## LICENSE
 
