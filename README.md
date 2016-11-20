@@ -133,7 +133,7 @@ app.listen(80);
 
 ### 详细示例
 
-参见项目：[Wafer 服务端 DEMO - Node.js](https://github.com/tencentyun/weapp-node-server-demo)
+参见项目：[Wafer 服务端 DEMO - Node.js](https://github.com/tencentyun/wafer-node-server-demo)
 
 ## LICENSE
 
@@ -143,9 +143,9 @@ app.listen(80);
 [npm-url]: https://npmjs.org/package/qcloud-weapp-server-sdk
 [nodejs-image]: https://img.shields.io/badge/Node.js-%3E%3D%204.0-669B64.svg
 [nodejs-url]: https://nodejs.org/
-[travis-image]: https://travis-ci.org/tencentyun/weapp-node-server-sdk.svg?branch=master
-[travis-url]: https://travis-ci.org/tencentyun/weapp-node-server-sdk
-[coveralls-image]: https://coveralls.io/repos/github/tencentyun/weapp-node-server-sdk/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/github/tencentyun/weapp-node-server-sdk?branch=master
+[travis-image]: https://travis-ci.org/tencentyun/wafer-node-server-sdk.svg?branch=master
+[travis-url]: https://travis-ci.org/tencentyun/wafer-node-server-sdk
+[coveralls-image]: https://coveralls.io/repos/github/tencentyun/wafer-node-server-sdk/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/tencentyun/wafer-node-server-sdk?branch=master
 [license-image]: http://img.shields.io/npm/l/qcloud-weapp-server-sdk.svg
 [license-url]: LICENSE
