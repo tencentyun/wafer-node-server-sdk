@@ -86,6 +86,8 @@ app.get('/user', (req, res) => {
 app.listen(80);
 ```
 
+阅读 Wafer Wiki 文档中的[会话服务](https://github.com/tencentyun/wafer/wiki/%E4%BC%9A%E8%AF%9D%E6%9C%8D%E5%8A%A1)了解更多关于会话服务的技术资料。
+
 ### 使用信道服务
 
 业务在一个路由上（如 `/tunnel`）提供信道服务，只需把该路由上的请求都交给 SDK 的信道服务处理即可。
