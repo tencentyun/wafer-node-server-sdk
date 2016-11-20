@@ -1,6 +1,6 @@
 {
   "name": "qcloud-weapp-server-sdk",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Wafer 服务端 SDK - Node.js",
   "main": "index.js",
   "scripts": {
