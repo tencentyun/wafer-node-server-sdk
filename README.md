@@ -147,5 +147,5 @@ app.listen(80);
 [travis-url]: https://travis-ci.org/tencentyun/wafer-node-server-sdk
 [coveralls-image]: https://coveralls.io/repos/github/tencentyun/wafer-node-server-sdk/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/tencentyun/wafer-node-server-sdk?branch=master
-[license-image]: http://img.shields.io/npm/l/qcloud-weapp-server-sdk.svg
+[license-image]: https://img.shields.io/github/license/tencentyun/wafer-node-server-sdk.svg
 [license-url]: LICENSE
